@@ -1,11 +1,11 @@
 
---QS 1
+--QS 1 Retrieve all successful bookings:
 create view successfull_bookings as
 select*
 from bookings
 where Booking_Status = 'Success'
 
---QS 2
+--QS 2 Find the average ride distance for each vehicle type:
 create view avg_ride as
 select Vehicle_Type, 
 avg(ride_distance) as avg_ride
@@ -13,14 +13,14 @@ from Bookings
 group by Vehicle_Type
 select* from avg_ride
 
---QS 3
+--QS 3 Get the total number of cancelled rides by customers:
 create view canceled_by_customer as 
 select count(*) as total
 from Bookings
 where Booking_Status = 'canceled by customer'
 select* from canceled_by_customer
 
---QS 4
+--QS 4 List the top 5 customers who booked the highest number of rides:
 CREATE VIEW TOP_5_REPEAT_CUSTOMERS AS
 select TOP 5
 CUSTOMER_ID,
@@ -30,27 +30,27 @@ GROUP BY Customer_ID
 ORDER BY TOTAL_RIDES DESC
 SELECT * FROM TOP_5_REPEAT_CUSTOMERS
 
---QS 5
+--QS 5 Get the number of rides cancelled by drivers due to personal and car-related issues:
 create view CancelledDueToPersonalReasons as
 SELECT COUNT(*) as cancelled
 FROM Bookings
 WHERE Canceled_Rides_by_Driver = 'Personal & Car related issue'
 select * from CancelledDueToPersonalReasons;
 
---QS 6 
+--QS 6 Find the maximum and minimum driver ratings for Prime Sedan bookings:
 CREATE VIEW MAX_MIN_RATINGS AS
 SELECT MAX(DRIVER_RATINGS) AS MAX_RATINGS, MIN(DRIVER_RATINGS) AS MIN_RATINGS
 FROM Bookings
 WHERE Vehicle_Type = 'Prime Sedan'
 SELECT* FROM MAX_MIN_RATINGS
 
---QS 7
+--QS 7 Retrieve all rides where payment was made using UPI:
 CREATE VIEW UPI AS
 SELECT* FROM Bookings
 WHERE Payment_Method = 'UPI'
 SELECT* FROM UPI
 
---QS 8
+--QS 8 Find the average customer rating per vehicle type:
 CREATE VIEW AVG_CUSTOMER_RATINGS AS
 SELECT 
 VEHICLE_TYPE,
@@ -59,7 +59,7 @@ FROM Bookings
 GROUP BY Vehicle_Type
 SELECT * FROM AVG_CUSTOMER_RATINGS
 
---QS 9 
+--QS 9 Calculate the total booking value of rides completed successfully:
  CREATE VIEW TOTAL_AMT AS
  SELECT 
  SUM(BOOKING_VALUE) TOTAL_VALUE
@@ -67,7 +67,9 @@ SELECT * FROM AVG_CUSTOMER_RATINGS
  WHERE Booking_Status = 'Success'
  SELECT* FROM TOTAL_AMT
 
- --QS 10
+ --QS 10 List all incomplete rides along with the reason:
+ -- Note: Incomplete_Rides_Reason stores 'null' as text (not actual NULL)
+ -- hence using <> 'null' instead of IS NOT NULL
  CREATE VIEW INCOMPLETE_RIDES AS
  SELECT Booking_ID,Incomplete_Rides_Reason
  FROM BOOKINGS
